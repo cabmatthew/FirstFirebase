@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    display: inline-block; 
+    width:80px;
+}
+
+input,select {
+    width: 120px;
+}
+
+.form, .list {
+    text-align: center;
+}
+
+nav, .nav-title {
+    background-color: aqua;
+    padding: 8px;
+    margin: 0;
+}

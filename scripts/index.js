@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getDatabase, ref, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+import { getDatabase, ref, get, set, child, update, remove, push } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
 
 console.log("line 4")
 
@@ -47,13 +47,13 @@ function InsertData() {
 function SelectData() {
     const dbref = ref(db);
 
-    get(child(dbref,"TheStudents/"+ rollbox.value)).then((snapshot)=>{
+    get(child(dbref,"TheStudents/"+ rollbox.value))
+    .then((snapshot)=>{
         if(snapshot.exists()){
             namebox.value = snapshot.val().NameOfStd;
             secbox.value = snapshot.val().Section;
             genbox.value = snapshot.val().Gender;
         }
-
         else{
             alert("No data found");
         }
@@ -93,8 +93,50 @@ selBtn.addEventListener('click', SelectData);
 updBtn.addEventListener('click', UpdateData);
 delBtn.addEventListener('click', DeleteData);
 
-// const postListRef = ref(db, 'posts');
+// EXAMPLE OF PUSHING TO LIST
+// const postListRef = ref(db, 'TheStudents/1/weights');
 // const newPostRef = push(postListRef);
 // set(newPostRef, {
-//     "test post"
+//     date: "4/2",
+//     weight: "157"
 // });
+
+
+// let myRef = ref(db, '/TheStudents/1/weights/-NuVOMBL80K2D8Nxb1K_');
+// myRef.remove;
+
+// db.child("/TheStudents/1/weights/-NuVOMBL80K2D8Nxb1K_").remove();
+// console.log("107");
+
+// let myRef = ref(db, '/TheStudents/1/weights/-NuVOMBL80K2D8Nxb1K_');
+// remove(myRef)
+//   .then(() => {
+//     console.log('Item removed successfully');
+//   })
+//   .catch((error) => {
+//     console.error('Error removing item:', error);
+//   });
+
+// References to index.html
+var rollbox2 = document.getElementById("Rollbox2");
+var weightbox = document.getElementById("Weightbox");
+var datebox = document.getElementById("Datebox");
+
+var pushBtn = document.getElementById("Pushbtn");
+
+function PushData() {
+    const weightListRef = ref(db, "TheStudents/" + rollbox2.value + "/weights");
+    const newWeightRef = push(weightListRef);
+    set(newWeightRef, {
+        weight: weightbox.value,
+        date: datebox.value
+    })
+    .then(()=>{
+        alert("data pushed successfully");
+    })
+    .catch((error)=>{
+        alert("unsuccessful, error"+ error);
+    });
+}
+
+pushBtn.addEventListener('click', PushData);

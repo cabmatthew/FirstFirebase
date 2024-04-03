@@ -17,10 +17,12 @@ input,select {
 }
 
 nav, .nav-title {
-    background-color: aqua;
+    background-color: rgb(93, 110, 223);
     padding: 8px;
     margin: 0;
+    color: white;
 }
+
 
 .view-data {
     text-align: center;

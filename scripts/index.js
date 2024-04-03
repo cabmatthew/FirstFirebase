@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getDatabase, ref, get, set, child, update, remove, push, onValue } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+import { getDatabase, ref, get, set, child, update, remove, push, onValue, orderByValue, orderByChild, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
 
 console.log("line 4")
 
@@ -148,9 +148,9 @@ var mydata = document.getElementById("mydata");
 var getBtn = document.getElementById("Getbtn");
 
 function getData() {
-    const dbRef = ref(db, "/TheStudents/" + rollbox3.value + "/weights");
-    
-    onValue(dbRef, (snapshot) => {
+    const orderedRef = query(ref(db, "/TheStudents/" + rollbox3.value + "/weights"), orderByChild('date'));
+
+    onValue(orderedRef, (snapshot) => {
         let myWeights = "";
         console.log("Snapshot exists? " + snapshot.exists());
         if (snapshot.exists()) {

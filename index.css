@@ -21,3 +21,7 @@ nav, .nav-title {
     padding: 8px;
     margin: 0;
 }
+
+.view-data {
+    text-align: center;
+}

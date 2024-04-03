@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getDatabase, ref, get, set, child, update, remove, push } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+import { getDatabase, ref, get, set, child, update, remove, push, onValue } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
 
 console.log("line 4")
 
@@ -40,7 +40,7 @@ function InsertData() {
         alert("data stored successfully");
     })
     .catch((error)=>{
-        alert("unsuccessful, error"+ error);
+        alert("unsuccessful, error: "+ error);
     });
 }
 
@@ -59,7 +59,7 @@ function SelectData() {
         }
     })
     .catch((error)=>{
-        alert("unsuccessful, error"+ error);
+        alert("unsuccessful, error: "+ error);
     });
 }
 
@@ -73,7 +73,7 @@ function UpdateData() {
         alert("data updated successfully");
     })
     .catch((error)=>{
-        alert("unsuccessful, error"+ error);
+        alert("unsuccessful, error: "+ error);
     });
 }
 
@@ -83,7 +83,7 @@ function DeleteData() {
         alert("data removed successfully");
     })
     .catch((error)=>{
-        alert("unsuccessful, error"+ error);
+        alert("unsuccessful, error: "+ error);
     });
 }
 
@@ -135,8 +135,48 @@ function PushData() {
         alert("data pushed successfully");
     })
     .catch((error)=>{
-        alert("unsuccessful, error"+ error);
+        alert("unsuccessful, error: "+ error);
     });
 }
 
 pushBtn.addEventListener('click', PushData);
+
+// Getting data
+
+var rollbox3 = document.getElementById("Rollbox3");
+var mydata = document.getElementById("mydata");
+var getBtn = document.getElementById("Getbtn");
+
+function getData() {
+    const dbRef = ref(db, "/TheStudents/" + rollbox3.value + "/weights");
+    
+    onValue(dbRef, (snapshot) => {
+        let myWeights = "";
+        console.log("Snapshot exists? " + snapshot.exists());
+        if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+                // const childKey = childSnapshot.key;
+                const childData = childSnapshot.val();
+                myWeights += "Date: " + childData.date;
+                myWeights += ", weight: " + childData.weight;
+                myWeights += "<br/>";
+            });
+        }
+        if (snapshot.exists()) {
+            mydata.innerHTML = myWeights + "<br/>Click \"GET DATA\" to update weight data!";
+            alert("data retrieved successfully");
+        } else {
+            mydata.innerHTML = "Click \"GET DATA\" to view weight data!";
+            alert("data not found!");
+
+        }
+    }, {
+        onlyOnce: true
+    }, (error)=>{
+        alert("unsuccessful, error: "+ error);
+    });
+}
+
+getBtn.addEventListener("click", getData);
+
+// NEXT: ORDER BY DATE

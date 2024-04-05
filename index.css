@@ -16,11 +16,17 @@ input,select {
     text-align: center;
 }
 
-nav, .nav-title {
+.form {
+    margin-top: 90px;
+}
+
+nav {
     background-color: rgb(93, 110, 223);
-    padding: 8px;
-    margin: 0;
     color: white;
+    position: fixed;
+    padding-left: 10px;
+    width: 100%;
+    top: 0px;
 }
 
 

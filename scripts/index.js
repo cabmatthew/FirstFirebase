@@ -93,36 +93,14 @@ selBtn.addEventListener('click', SelectData);
 updBtn.addEventListener('click', UpdateData);
 delBtn.addEventListener('click', DeleteData);
 
-// EXAMPLE OF PUSHING TO LIST
-// const postListRef = ref(db, 'TheStudents/1/weights');
-// const newPostRef = push(postListRef);
-// set(newPostRef, {
-//     date: "4/2",
-//     weight: "157"
-// });
-
-
-// let myRef = ref(db, '/TheStudents/1/weights/-NuVOMBL80K2D8Nxb1K_');
-// myRef.remove;
-
-// db.child("/TheStudents/1/weights/-NuVOMBL80K2D8Nxb1K_").remove();
-// console.log("107");
-
-// let myRef = ref(db, '/TheStudents/1/weights/-NuVOMBL80K2D8Nxb1K_');
-// remove(myRef)
-//   .then(() => {
-//     console.log('Item removed successfully');
-//   })
-//   .catch((error) => {
-//     console.error('Error removing item:', error);
-//   });
-
 // References to index.html
 var rollbox2 = document.getElementById("Rollbox2");
 var weightbox = document.getElementById("Weightbox");
 var datebox = document.getElementById("Datebox");
 
 var pushBtn = document.getElementById("Pushbtn");
+
+// Add to list of data
 
 function PushData() {
     const weightListRef = ref(db, "TheStudents/" + rollbox2.value + "/weights");
@@ -155,20 +133,20 @@ function getData() {
         console.log("Snapshot exists? " + snapshot.exists());
         if (snapshot.exists()) {
             snapshot.forEach((childSnapshot) => {
-                // const childKey = childSnapshot.key;
+                const childKey = childSnapshot.key;
                 const childData = childSnapshot.val();
                 myWeights += "Date: " + childData.date;
                 myWeights += ", weight: " + childData.weight;
+                myWeights += "  <button class=\"listdeletebtn\" data-key=\"" + childKey + "\">-</button>";
                 myWeights += "<br/>";
             });
         }
         if (snapshot.exists()) {
             mydata.innerHTML = myWeights + "<br/>Click \"GET DATA\" to update weight data!";
-            alert("data retrieved successfully");
+            // alert("data retrieved successfully");
         } else {
             mydata.innerHTML = "Click \"GET DATA\" to view weight data!";
             alert("data not found!");
-
         }
     }, {
         onlyOnce: true
@@ -179,4 +157,25 @@ function getData() {
 
 getBtn.addEventListener("click", getData);
 
-// NEXT: ORDER BY DATE
+// Delete data from list
+
+function DeleteFromList(key) {
+    const myRef = ref(db, '/TheStudents/' + rollbox3.value + '/weights/' + key);
+    remove(myRef)
+    .then(() => {
+        console.log('Item removed successfully');
+    })
+    .catch((error) => {
+        console.error('Error removing item:', error);
+    });
+}
+
+mydata.addEventListener('click', function(event) {
+    console.log("test");
+    if (event.target.classList.contains('listdeletebtn')) {
+        console.log("ha");
+        const childKey = event.target.dataset.key;
+        DeleteFromList(childKey);
+        getData();
+    }
+});
